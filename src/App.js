@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState} from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home"
+import { Alert } from "./components/Alert";
 
 function App() {
+
+  const[alert, setalert] = useState(null);
+  // we want to show different type of alert ex(success, failure, denger etc)// 
+  const showAlert = (message, type) => {
+    setalert({
+      msg: message,
+      type: type       // initiallly alert was null now alert is an object
+    });
+
+    setTimeout(() => {
+      setalert(null);
+    }, 2000);
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Alert alert ={alert}/>
+      <Routes>
+        <Route path="/register" element={<Register showAlert={showAlert} />} />
+        <Route path="/login" element={<Login showAlert={showAlert}/>} />
+        <Route path="/" element={<Home  showAlert={showAlert} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App;
+export default App
